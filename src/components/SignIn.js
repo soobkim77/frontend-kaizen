@@ -48,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
 const SESHURL = "http://localhost:3000/sessions";
 
 const SignIn = (props) => {
-  console.log(props)
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -80,7 +79,7 @@ const SignIn = (props) => {
     fetch(SESHURL, configObj)
       .then((r) => r.json())
       .then((resp) => {
-        props.logIn()
+        props.logIn(resp.user.data.attributes)
         userHelper(resp)});
   };
 
@@ -154,14 +153,15 @@ const SignIn = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn: state.loggedIn
+    loggedIn: state.loggedIn,
+    user: state.user
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logIn: () => {
-      dispatch({ type: "logIn" })
+    logIn: (currentUser) => {
+      dispatch({ type: "logIn", user: currentUser })
     }
   }
 }

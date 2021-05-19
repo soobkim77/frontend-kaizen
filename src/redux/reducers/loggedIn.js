@@ -1,8 +1,15 @@
-const loggedIn = (state = {loggedIn: false}, action) => {
+const initialState = {
+    loggedIn: false,
+    boards: [],
+    user: {}
+}
+
+const loggedIn = (state = initialState, action) => {
     switch(action.type){
         case("logIn"):
             return {
-                loggedIn: true
+                loggedIn: true,
+                user: action.payload
             }
         case("SignOut"):
             return {
