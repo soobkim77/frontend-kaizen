@@ -1,12 +1,20 @@
-import SignUp from './components/SignUp'
+import SignIn from './components/SignIn'
+import NavBar from './components/NavBar'
+import { connect } from 'react-redux'
 import './App.css';
 
-function App() {
+const App = ({loggedIn}) =>  {
   return (
     <div className="App">
-      <SignUp/>
+      {loggedIn.loggedIn ? <NavBar/> : <SignIn/>}
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.loggedIn
+  }
+}
+
+export default connect(mapStateToProps)(App);

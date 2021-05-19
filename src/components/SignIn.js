@@ -10,6 +10,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { connect } from 'react-redux'
 
 function Copyright() {
   return (
@@ -46,7 +47,8 @@ const useStyles = makeStyles((theme) => ({
 
 const SESHURL = "http://localhost:3000/sessions";
 
-const SignIn = () => {
+const SignIn = (props) => {
+  console.log(props)
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -77,7 +79,9 @@ const SignIn = () => {
 
     fetch(SESHURL, configObj)
       .then((r) => r.json())
-      .then((resp) => userHelper(resp));
+      .then((resp) => {
+        props.logIn()
+        userHelper(resp)});
   };
 
 
@@ -85,7 +89,6 @@ const SignIn = () => {
     setUsername("");
     setPassword("");
     window.localStorage.setItem("jwt", resp.jwt);
-    // props.loginHelper()
     // history.push('/blogs')
   };
 
@@ -149,4 +152,18 @@ const SignIn = () => {
   );
 }
 
-export default SignIn
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.loggedIn
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logIn: () => {
+      dispatch({ type: "logIn" })
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn)
