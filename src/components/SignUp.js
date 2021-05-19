@@ -44,9 +44,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SESHURL = "http://localhost:3000/sessions";
+const URL = "http://localhost:3000/users";
 
-const SignIn = () => {
+const SignUp = () => {
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -60,7 +60,7 @@ const SignIn = () => {
   };
 
   
-  const handleLogin = (e) => {
+  const createUser = (e) => {
     e.preventDefault();
     let configObj = {
       method: "POST",
@@ -70,24 +70,16 @@ const SignIn = () => {
       body: JSON.stringify({
         user: {
           username,
-          password,
+          password
         },
       }),
     };
-
-    fetch(SESHURL, configObj)
+    fetch(URL, configObj)
       .then((r) => r.json())
-      .then((resp) => userHelper(resp));
+
+    e.target.reset();
   };
 
-
-  const userHelper = (resp) => {
-    setUsername("");
-    setPassword("");
-    window.localStorage.setItem("jwt", resp.jwt);
-    // props.loginHelper()
-    // history.push('/blogs')
-  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -97,9 +89,9 @@ const SignIn = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Sign Up
         </Typography>
-        <form className={classes.form} onSubmit={e => handleLogin(e)} noValidate>
+        <form className={classes.form} onSubmit={e => createUser(e)} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -131,12 +123,12 @@ const SignIn = () => {
             color="primary"
             className={classes.submit}
           >
-            Sign In
+            Sign Up
           </Button>
           <Grid container>
             <Grid item>
               <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
+                {"Have an account? Sign In"}
               </Link>
             </Grid>
           </Grid>
@@ -149,4 +141,4 @@ const SignIn = () => {
   );
 }
 
-export default SignIn
+export default SignUp
