@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 function Copyright() {
   return (
@@ -51,6 +52,8 @@ const SignIn = (props) => {
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const history = useHistory();
+  // const history = useHistory();
 
   const handleChange = (event, type) => {
     let stateMap = {
@@ -88,7 +91,7 @@ const SignIn = (props) => {
     setUsername("");
     setPassword("");
     window.localStorage.setItem("jwt", resp.jwt);
-    // history.push('/blogs')
+    history.push('/home')
   };
 
   return (
@@ -160,8 +163,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logIn: (currentUser) => {
-      dispatch({ type: "logIn", user: currentUser })
+    logIn: (user) => {
+      dispatch({ type: "logIn", payload: user })
     }
   }
 }
