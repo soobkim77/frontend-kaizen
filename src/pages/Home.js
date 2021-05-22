@@ -1,49 +1,39 @@
 import { connect } from 'react-redux'
 import { useEffect } from 'react'
 import BoardPrev from '../components/BoardPrev'
+import { fetchBoards } from '../redux/actions/fetchBoards'
 
-const URL = "http://localhost:3000/boards";
+
 
 const Home = (props) => {
 
-    const fetchBoards = () => {
-        let configObj = {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-            },
-        };
-        fetch(URL, configObj)
-        .then(r => r.json())
-        .then(resp => {
-            props.getBoards(resp.boards)
-        })
-    }
 
     useEffect(()=>{
-        fetchBoards();
-    }, [])
+        props.fetchBoards();
+    }, [props.fetchBoards])
 
     return(
         <div>
-            {props.boards.boards.map(board => {
+            {props.boards.boards ? props.boards.boards.map(board => <BoardPrev board={board} key={board.id}/> ) : null}
+            {/* {props.boards.boards.boards.map(board => {
                 return <BoardPrev board={board} key={board.id}/>
-            })}
+            })} */}
         </div>
     )
 }
 
 const mapStateToProps = (state) => {
     return {
-        boards: state.boards
+        boards: state.boards.boards,
+        currentBoard: {...state.currentBoard},
+        requesting: state.requesting
     }
 }
 
 const mapDispatchToProps= (dispatch) => {
     return {
-        getBoards: (boards) => {
-            dispatch({type: "get-boards", payload: boards})
+        fetchBoards: () => {
+            dispatch(fetchBoards())
         }
     }
 }
