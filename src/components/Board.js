@@ -2,14 +2,25 @@ import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import { Button } from '@material-ui/core'
 import Task from './Task'
+import { useHistory } from 'react-router-dom'
+
 
 
 const Board = (props) => {
+    const history = useHistory();
+
+    const addTask = () => {
+        history.push("/tasks/create")
+    }
 
     return (
         
         <Fragment>
+            <Button variant="outlined" onClick={() => addTask()}>
+                Add A Task
+            </Button>
             {props.currentBoard.board ? 
             <Fragment>
             {props.currentBoard.board.title}
