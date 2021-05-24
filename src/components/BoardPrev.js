@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { showBoard } from '../redux/actions/showBoard'
+import { useHistory } from "react-router-dom";
 
 
 const useStyles = makeStyles({
@@ -23,9 +24,17 @@ const useStyles = makeStyles({
 
 const BoardPrev = ({board, showBoard}) => {
     const classes = useStyles();
+    const history = useHistory();
 
     const getBoard = (board) => {
       showBoard(board);
+    }
+
+    const editBoard = () => {
+      history.push({
+        pathname: `/boards/edit/${board.id}`,
+        state: board
+      })
     }
 
 
@@ -47,8 +56,8 @@ const BoardPrev = ({board, showBoard}) => {
                 </CardContent>
             </CardActionArea>
             <CardActions>
-                <Button size="small" color="primary">
-                Share
+                <Button size="small" color="primary" onClick={() => editBoard()} >
+                Edit
                 </Button>
                 <Link to={`/boards/${board.id}`} onClick={() => getBoard(board)}>
                 Learn More

@@ -15,6 +15,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DoneIcon from '@material-ui/icons/Done';
 import { connect } from 'react-redux'
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,14 +40,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const  Task = (props) => {
+const Task = (props) => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  let history = useHistory();
 
   const doTask = () => {
     let myTask = props.task
     myTask.completed = true
     props.completeTask(myTask)
+  }
+
+  const editTask = () => {
+    history.push({
+      pathname: `/tasks/edit/${props.task.id}`,
+      state: props.task
+    })
   }
 
   const handleExpandClick = () => {
@@ -58,19 +67,14 @@ const  Task = (props) => {
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-            R
+            {props.task.title[0]}
           </Avatar>
         }
         title={props.task.title}
         subheader={`Due By: ${props.task.due_date}`}
       />
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-         {props.task.description}
-        </Typography>
-      </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
+        <IconButton aria-label="edit task" onClick={() => editTask()}>
           <EditIcon />
         </IconButton>
         <IconButton aria-label="share" onClick={() => doTask()}>
