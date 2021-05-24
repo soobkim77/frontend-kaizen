@@ -1,53 +1,36 @@
-import { useParams } from 'react-router-dom'
-import React, { useEffect, Fragment } from 'react'
+import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Task from './Task'
 
-const URL = "http://localhost:3000/boards"
 
 const Board = (props) => {
-    // const { id } = useParams();
 
-    // useEffect(() => {
-    //     let configObj = {
-    //         method: "GET",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //             Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-    //         },
-    //     };
-
-    //     fetch(URL + "/" + id, configObj)
-    //         .then((r) => r.json())
-    //         .then((data) => console.log(data))
-    //         .catch((e) => console.error("e:", e));
-    // }, []);
-    
     return (
         
         <Fragment>
             {props.currentBoard.board ? 
             <Fragment>
             {props.currentBoard.board.title}
-            <Grid container spacing={3}>
-                <Grid item xs={6} sm={3}>
+            <Grid container spacing={6}>
+                <Grid item xs={6} sm={6}>
                     <Paper>
-                    {props.currentBoard.tasks.filter(task => task.completed == false).map(task => {
+                        <h3>To-Do:</h3>
+                    {props.currentBoard.tasks.filter(task => task.completed === false).map(task => {
                             return (
-                                <div>
-                                    {task.title}
-                                </div>
+                                <Task task={task} key={task.id} />
                             )
                         }) }
                     </Paper>
                 </Grid>
-                <Grid item xs={6} sm={3}>
+                <Grid item xs={6} sm={6}>
                     <Paper>
-                        {props.currentBoard.tasks.filter(task => task.completed == true).map(task => {
+                        <h3>Completed:</h3>
+                        {props.currentBoard.tasks.filter(task => task.completed === true).map(task => {
                             return (
                                 <div>
-                                    {task.title}
+                                    <Task task={task} key={task.id} />
                                 </div>
                             )
                         }) }

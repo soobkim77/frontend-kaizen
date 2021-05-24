@@ -11,7 +11,6 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { showBoard } from '../redux/actions/showBoard'
 
-const URL = "http://localhost:3000/boards"
 
 const useStyles = makeStyles({
   root: {
