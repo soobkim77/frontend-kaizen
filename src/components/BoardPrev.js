@@ -6,12 +6,13 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
+import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { showBoard } from '../redux/actions/showBoard'
 import { useHistory } from "react-router-dom";
-
+import { deleteBoard } from "../redux/actions/deleteBoard"
 
 const useStyles = makeStyles({
   root: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles({
   },
 });
 
-const BoardPrev = ({board, showBoard}) => {
+const BoardPrev = ({board, showBoard, deleteBoard}) => {
     const classes = useStyles();
     const history = useHistory();
 
@@ -35,6 +36,10 @@ const BoardPrev = ({board, showBoard}) => {
         pathname: `/boards/edit/${board.id}`,
         state: board
       })
+    }
+
+    const deleteBor = () => {
+      deleteBoard(board);
     }
 
 
@@ -62,6 +67,9 @@ const BoardPrev = ({board, showBoard}) => {
                 <Link to={`/boards/${board.id}`} onClick={() => getBoard(board)}>
                 Learn More
                 </Link>
+                <Button onClick={() => deleteBor()} >
+                  <DeleteIcon />
+                </Button>
             </CardActions>
          </Card>
     )
@@ -77,6 +85,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
       showBoard: (board) => {
           dispatch(showBoard(board.id))
+      },
+      deleteBoard: (board) => {
+        dispatch(deleteBoard(board))
       }
   }
 }

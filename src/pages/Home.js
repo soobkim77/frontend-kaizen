@@ -34,7 +34,7 @@ const Home = (props) => {
 
     useEffect(() => {
         props.fetchBoards();
-    }, [props.fetchBoards])
+    }, [])
 
     const addBoard = (e) => {
         setTitle("");
@@ -45,6 +45,7 @@ const Home = (props) => {
             description: description
         }
         props.addBoard(board)
+        setNewBoard(false)
     }
 
     const newBoardForm = () => {

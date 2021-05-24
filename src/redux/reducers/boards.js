@@ -44,6 +44,23 @@ const boards = (state = initialState, action) => {
                 },
                 requesting: false
             }
+        case ('ADD_TASK'): 
+            return {
+                ...state,
+                currentBoard: {
+                    ...state.currentBoard, tasks: 
+                    [...state.currentBoard.tasks, action.task]
+                },
+                requesting: false
+            }
+        case ("DELETE_BOARD"):
+            return {
+                ...state, 
+                boards: {...state.boards, boards: 
+                    [...state.boards.boards].filter(board => board.id !== action.board.id)
+                },
+                requesting: false
+            }
         default:
             return state
     }
