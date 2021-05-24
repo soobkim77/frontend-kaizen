@@ -7,6 +7,10 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { showBoard } from '../redux/actions/showBoard'
+
 
 const useStyles = makeStyles({
   root: {
@@ -17,8 +21,14 @@ const useStyles = makeStyles({
   },
 });
 
-const BoardPrev = ({board}) => {
+const BoardPrev = ({board, showBoard}) => {
     const classes = useStyles();
+
+    const getBoard = (board) => {
+      showBoard(board);
+    }
+
+
     return (
         <Card className={classes.root}>
             <CardActionArea>
@@ -40,12 +50,26 @@ const BoardPrev = ({board}) => {
                 <Button size="small" color="primary">
                 Share
                 </Button>
-                <Button size="small" color="primary">
+                <Link to={`/boards/${board.id}`} onClick={() => getBoard(board)}>
                 Learn More
-                </Button>
+                </Link>
             </CardActions>
          </Card>
     )
 }
 
-export default BoardPrev;
+const mapStateToProps = (state) => {
+  return {
+      currentBoard: state.boards.currentBoard
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      showBoard: (board) => {
+          dispatch(showBoard(board.id))
+      }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BoardPrev);
