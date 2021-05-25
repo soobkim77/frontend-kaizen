@@ -1,4 +1,5 @@
 import SignIn from './components/SignIn'
+import SignUp from './components/SignUp'
 import NavBar from './components/NavBar'
 import EditTaskForm from './components/EditTaskForm'
 import EditBoardForm from './components/EditBoardForm'
@@ -15,6 +16,7 @@ const App = ({loggedIn}) =>  {
       {loggedIn.loggedIn ? <NavBar/> : <Redirect to='/' /> }
       <Switch>
         <Route exact path="/" component={SignIn} />
+        <Route exact path="/signup" component={SignUp}/>
         <Route exact path="/home" render={(routerProps) => <Home {...routerProps} />} />
         <Route exact path='/boards/:id' component={Board} />
         <Route exact path='/boards/:id/edit' component={EditBoardForm} />

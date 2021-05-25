@@ -4,12 +4,13 @@ import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
+// import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { useHistory } from 'react-router-dom'
 
 function Copyright() {
   return (
@@ -50,6 +51,7 @@ const SignUp = () => {
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const history = useHistory()
 
   const handleChange = (event, type) => {
     let stateMap = {
@@ -78,6 +80,7 @@ const SignUp = () => {
       .then((r) => r.json())
 
     e.target.reset();
+    history.push("/")
   };
 
 
@@ -125,13 +128,13 @@ const SignUp = () => {
           >
             Sign Up
           </Button>
-          <Grid container>
+          {/* <Grid container>
             <Grid item>
               <Link href="#" variant="body2">
                 {"Have an account? Sign In"}
               </Link>
             </Grid>
-          </Grid>
+          </Grid> */}
         </form>
       </div>
       <Box mt={8}>
