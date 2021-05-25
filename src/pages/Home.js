@@ -5,13 +5,17 @@ import { fetchBoards } from '../redux/actions/fetchBoards'
 import { addBoard } from '../redux/actions/addBoard'
 import TextField from "@material-ui/core/TextField";
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import {Button, makeStyles} from "@material-ui/core"
+import {Button, makeStyles, Grid} from "@material-ui/core";
 
 
 const useStyles = makeStyles((theme) => ({
     button: {
       margin: theme.spacing(1),
     },
+    gird: {
+        justifyContent: "space-evenly",
+        padding: "20px"
+    }
   }));
   
 
@@ -92,10 +96,13 @@ const Home = (props) => {
                 :
                 null
             }
-            {props.boards.boards ?
-                props.boards.boards.map(board => <BoardPrev board={board} key={board.id} />)
-                :
-                null}
+            <Grid container direction='space-between'>
+                {props.boards.boards ?
+                    props.boards.boards.map(board => <BoardPrev board={board} key={board.id} />)
+                    :
+                    null}
+            </Grid>
+            
         </div>
     )
 }

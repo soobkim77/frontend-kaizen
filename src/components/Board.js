@@ -5,11 +5,18 @@ import Grid from '@material-ui/core/Grid';
 import { Button } from '@material-ui/core'
 import Task from './Task'
 import { useHistory } from 'react-router-dom'
+import { makeStyles } from '@material-ui/core'
 
-
+const useStyles = makeStyles((theme) => ({
+    taskCont: {
+        margin: "auto"
+      },
+})
+)
 
 const Board = (props) => {
     const history = useHistory();
+    const classes = useStyles();
 
     const addTask = () => {
         history.push("/tasks/create")
@@ -25,8 +32,8 @@ const Board = (props) => {
             <Fragment>
             {props.currentBoard.board.title}
             <Grid container spacing={6}>
-                <Grid item xs={6} sm={6}>
-                    <Paper>
+                <Grid item xs={6} sm={6} >
+                    <Paper className={classes.taskCont}>
                         <h3>To-Do:</h3>
                     {props.currentBoard.tasks.filter(task => task.completed === false).map(task => {
                             return (

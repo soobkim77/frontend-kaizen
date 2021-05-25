@@ -7,6 +7,8 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import HomeIcon from '@material-ui/icons/Home';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,6 +24,11 @@ const useStyles = makeStyles((theme) => ({
 
 const  NavBar = (props) => {
   const classes = useStyles();
+  const history = useHistory();
+
+  const homeLink = () => {
+    history.push('/home')
+  }
 
   return (
     <div className={classes.root}>
@@ -29,6 +36,9 @@ const  NavBar = (props) => {
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
+          </IconButton>
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={() => homeLink()} >
+            <HomeIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
             Kaizen
