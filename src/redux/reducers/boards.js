@@ -61,6 +61,16 @@ const boards = (state = initialState, action) => {
                 },
                 requesting: false
             }
+        case ('DELETE_TASK'): 
+            console.log(action)
+            return {
+                ...state,
+                currentBoard: {
+                    ...state.currentBoard, tasks: 
+                    [...state.currentBoard.tasks].filter(task => task.id !== action.task.id )
+                },
+                requesting: false
+            }
         default:
             return state
     }

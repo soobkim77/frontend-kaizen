@@ -14,9 +14,12 @@ import { showBoard } from '../redux/actions/showBoard'
 import { useHistory } from "react-router-dom";
 import { deleteBoard } from "../redux/actions/deleteBoard"
 
+
 const useStyles = makeStyles({
   root: {
     maxWidth: 345,
+    minWidth: 345,
+    margin: 20
   },
   media: {
     height: 140,
@@ -33,7 +36,7 @@ const BoardPrev = ({board, showBoard, deleteBoard}) => {
 
     const editBoard = () => {
       history.push({
-        pathname: `/boards/edit/${board.id}`,
+        pathname: `/boards/${board.id}/edit`,
         state: board
       })
     }

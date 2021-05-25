@@ -24,20 +24,22 @@ const CreateTask = (props) => {
     const submitAdd = (e) => {
         e.preventDefault();
 
+        let boardID = props.currentBoard.board.id
+
         let task = {
             title: title,
             description: description,
             due_date: dueDate,
             board_id: props.currentBoard.board.id
         }
-
         props.addTask(task)
-        history.push(`/boards/${props.currentBoard.board.board_id}`)
+        history.push(`/boards/${boardID}`)
     }
 
 
     return (
         <form onSubmit={(e) => submitAdd(e)}>
+                 
              <TextField
                 variant='outlined'
                 margin='normal'

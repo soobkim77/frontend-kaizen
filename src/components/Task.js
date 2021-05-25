@@ -16,10 +16,13 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DoneIcon from '@material-ui/icons/Done';
 import { connect } from 'react-redux'
 import { useHistory } from "react-router-dom";
+import { Button } from '@material-ui/core'
+import DeleteIcon from '@material-ui/icons/Delete';
+import { deleteTask } from '../redux/actions/deleteTask'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 600,
+    maxWidth: "auto"
   },
   media: {
     height: 0,
@@ -53,9 +56,12 @@ const Task = (props) => {
 
   const editTask = () => {
     history.push({
-      pathname: `/tasks/edit/${props.task.id}`,
+      pathname: `/tasks/${props.task.id}/edit`,
       state: props.task
     })
+  }
+  const delTask = () => {
+    props.deleteTask(props.task)
   }
 
   const handleExpandClick = () => {
@@ -74,12 +80,16 @@ const Task = (props) => {
         subheader={`Due By: ${props.task.due_date}`}
       />
       <CardActions disableSpacing>
+        <Button onClick={() => delTask()}>
+          Delete
+        </Button>
         <IconButton aria-label="edit task" onClick={() => editTask()}>
           <EditIcon />
         </IconButton>
         <IconButton aria-label="share" onClick={() => doTask()}>
           <DoneIcon />
         </IconButton>
+
         <IconButton
           className={clsx(classes.expand, {
             [classes.expandOpen]: expanded,
@@ -113,6 +123,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     completeTask: (task) => {
       dispatch(completeTask(task))
+    },
+    deleteTask: (task) => {
+      dispatch(deleteTask(task))
     }
   }
 } 
