@@ -10,6 +10,7 @@ const CreateTask = (props) => {
     const [title, setTitle] = useState();
     const [description, setDescription] = useState()
     const [dueDate, setDueDate] = useState();
+    const [status, setStatus] = useState();
     let history = useHistory();
 
     const handleChange = (event, type) => {
@@ -17,6 +18,7 @@ const CreateTask = (props) => {
             title: (event) => setTitle(event.target.value),
             description: (event) => setDescription(event.target.value),
             dueDate: (event) => setDueDate(event.target.value)
+            // status: (event) => setStatus(event.target.value)
         };
 
         stateMap[type](event);
@@ -30,7 +32,8 @@ const CreateTask = (props) => {
             title: title,
             description: description,
             due_date: dueDate,
-            board_id: props.currentBoard.board.id
+            board_id: props.currentBoard.board.id,
+            status: status
         }
         props.addTask(task)
         history.push(`/boards/${boardID}`)
@@ -77,6 +80,18 @@ const CreateTask = (props) => {
                 value={dueDate}
                 // inputProps={{pattern: "^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$"}}
             />
+            {/* <TextField
+                variant='outlined'
+                margin='normal'
+                required
+                fullWidth
+                onChange={(event) => handleChange(event, "status")}
+                id='status'
+                label='status'
+                name='status'
+                autoFocus
+                value={status}
+            /> */}
             <Button
                 variant="contained"
                 color="default"

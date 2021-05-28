@@ -13,7 +13,6 @@ export function addTask(task) {
         fetch('http://localhost:3000/tasks', configObj)
             .then(response => response.json())
             .then(task => {
-                console.log(task)
                 dispatch({ type: 'ADD_TASK', task })});
     };
 }
