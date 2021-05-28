@@ -30,6 +30,11 @@ const  NavBar = (props) => {
     history.push('/home')
   }
 
+  const signoutHelper = () => {
+    localStorage.removeItem("jwt")
+    props.signOut();
+  }
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -43,7 +48,7 @@ const  NavBar = (props) => {
           <Typography variant="h6" className={classes.title}>
             Kaizen
           </Typography>
-          <Button color="inherit" onClick={() => props.signOut()} >LogOut</Button>
+          <Button color="inherit" onClick={() => signoutHelper()} >LogOut</Button>
         </Toolbar>
       </AppBar>
     </div>

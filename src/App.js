@@ -3,13 +3,29 @@ import NavBar from './components/NavBar'
 import EditTaskForm from './components/EditTaskForm'
 import EditBoardForm from './components/EditBoardForm'
 import Board from './components/Board'
+import DropBoard from './dnd/DropBoard'
 import CreateTask from './components/CreateTask'
 import { connect } from 'react-redux'
-import {Route, Switch, Redirect} from 'react-router-dom';
+import { useEffect } from 'react'
+import {Route, Switch, Redirect, useHistory} from 'react-router-dom';
 import Home from './pages/Home'
 import './App.css';
 
-const App = ({loggedIn}) =>  {
+const App = ({loggedIn, logIn}) =>  {
+  const history = useHistory()
+
+  useEffect(() => {
+    const authToken = localStorage.getItem("jwt")
+    if (authToken){
+        logIn();
+        history.push('/home')
+    }
+    else {
+        history.push('/')
+    }
+    
+  }, [])
+
   return (
     <div className="App">
       {loggedIn.loggedIn ? <NavBar/> : <Redirect to='/' /> }
@@ -31,4 +47,12 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logIn: () => {
+      dispatch({ type: "RELOAD" })
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -1,5 +1,6 @@
-import React, {Fragment} from 'react';
-
+import React, {Fragment, useState, useRef} from 'react';
+import { useDrag, useDrop } from 'react-dnd'
+import ItemTypes from '../dnd/type'
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -45,10 +46,62 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Task = ({task, deleteTask, completeTask, index, moveTask, status}) => {
+const DragTask = ({task, deleteTask, completeTask, index, moveTask, status}) => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   let history = useHistory();
+  const ref = useRef(null);
+
+  const [, drop] = useDrop({
+    accept: "task",
+    hover(task, monitor){
+      if (!ref.current){
+        return
+      }
+
+
+      const dragIndex = task.index
+      const hoverIndex = index
+
+      if (dragIndex === hoverIndex){
+        return
+      }
+
+      const hoveredRect = ref.current.getBoundingClientRect();
+      const hoverMiddleY = (hoveredRect.bottom - hoveredRect.top) / 2;
+      const mousePosition = monitor.getClientOffset();
+      const hoverClientY = mousePosition.y - hoveredRect.top;
+
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY){
+        return;
+      }
+
+      if (dragIndex > hoverIndex && hoverClientY <  hoverMiddleY){
+        return;
+      }
+
+      const hoverable = monitor.isOver({shallow: true})
+      console.log(hoverable)
+      console.log(dragIndex, hoverIndex)
+      moveTask(dragIndex, hoverIndex);
+      task.index = hoverIndex;
+    }
+  });
+
+  const [{ isDragging }, drag] = useDrag({
+    task: { type: "task", ...task, index},
+    type: "task",
+    collect: monitor => ({
+      isDragging: !!monitor.isDragging()
+    })
+  })
+
+  const [show, setShow] = useState(false)
+
+  const onOpen = () => setShow(true)
+  const onClose = () => setShow(false)
+
+  drag(drop(ref))
 
   const doTask = () => {
     let myTask = task
@@ -73,7 +126,7 @@ const Task = ({task, deleteTask, completeTask, index, moveTask, status}) => {
   return (
     <Fragment>
 
-      <Card className={classes.root} >
+      <Card className={classes.root} ref={ref} style={{opacity: isDragging ? 0 : 1}}>
         <CardHeader
           avatar={
             <Avatar aria-label="recipe" className={classes.avatar}>
@@ -136,4 +189,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 } 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Task)
+export default connect(mapStateToProps, mapDispatchToProps)(DragTask)

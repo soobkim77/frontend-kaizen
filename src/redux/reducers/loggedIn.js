@@ -11,6 +11,10 @@ const loggedIn = (state = initialState, action) => {
                 loggedIn: true,
                 user: action.payload
             }
+        case ("RELOAD"):
+            return {
+                loggedIn: true
+            }
         case("SignOut"):
             return {
                 loggedIn: false

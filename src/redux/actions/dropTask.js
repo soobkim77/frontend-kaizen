@@ -1,17 +1,18 @@
-export function deleteTask(task) {
+export function dropTask(task) {
     return (dispatch) => {
-        dispatch({ type: 'START_GETTING_BOARD' });
+        dispatch({ type: 'START_DROPPING_TASK' });
 
         let configObj = {
-            method: "DELETE",
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-            }
+            },
+            body: JSON.stringify(task)
         };
         fetch(`http://localhost:3000/tasks/${task.id}`, configObj)
             .then(response => response.json())
             .then(task => {
-                dispatch({ type: 'DELETE_TASK', task })});
+                dispatch({ type: 'DROP_TASK', task })});
     };
 }

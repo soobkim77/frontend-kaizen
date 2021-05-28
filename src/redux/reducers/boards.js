@@ -62,7 +62,6 @@ const boards = (state = initialState, action) => {
                 requesting: false
             }
         case ('DELETE_TASK'): 
-            console.log(action)
             return {
                 ...state,
                 currentBoard: {
@@ -70,6 +69,22 @@ const boards = (state = initialState, action) => {
                     [...state.currentBoard.tasks].filter(task => task.id !== action.task.id )
                 },
                 requesting: false
+            }
+        case ('DROP_TASK'): 
+            return {
+                ...state, 
+                currentBoard: {
+                    ...state.currentBoard, tasks: 
+                    [...state.currentBoard.tasks].filter(task => task !== action.task.id).concat({...action.task})
+                }
+            }
+        case ('MOVE_TASK'):
+            return {
+                ...state, 
+                currentBoard: {
+                    ...state.currentBoard, tasks: 
+                    [...state.currentBoard.tasks].filter((task, idx) => idx !== action.dragIndex).splice(action.hoverIndex, 0 , action.task)
+                }
             }
         default:
             return state
