@@ -29,16 +29,10 @@ const Board = (props) => {
     const history = useHistory();
     const classes = useStyles();
 
-    const addTask = () => {
-        history.push("/tasks/create")
-    }
 
     return (
         
         <Fragment>
-            <Button variant="outlined" onClick={() => addTask()}>
-                Add A Task
-            </Button>
             {props.currentBoard.board ? 
             <Fragment>
             {props.currentBoard.board.title}

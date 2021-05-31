@@ -3,7 +3,9 @@ import NavBar from './components/NavBar'
 import EditTaskForm from './components/EditTaskForm'
 import EditBoardForm from './components/EditBoardForm'
 import Board from './components/Board'
-import DropBoard from './dnd/DropBoard'
+import Teams from './pages/Teams'
+import BoardForm from './components/BoardForm'
+import Team from './components/Team'
 import CreateTask from './components/CreateTask'
 import { connect } from 'react-redux'
 import { useEffect } from 'react'
@@ -32,10 +34,13 @@ const App = ({loggedIn, logIn}) =>  {
       <Switch>
         <Route exact path="/" component={SignIn} />
         <Route exact path="/home" render={(routerProps) => <Home {...routerProps} />} />
+        <Route exact path='/boards/create' component={BoardForm} />
         <Route exact path='/boards/:id' component={Board} />
         <Route exact path='/boards/:id/edit' component={EditBoardForm} />
         <Route exact path='/tasks/create' component={CreateTask} />
         <Route exact path='/tasks/:id/edit' component={EditTaskForm} />
+        <Route exact path='/teams' component={Teams} />
+        <Route exact path='/teams/:id' component={Team} />
       </Switch>
     </div>
   );

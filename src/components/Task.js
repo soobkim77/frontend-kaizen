@@ -1,5 +1,4 @@
 import React, {Fragment} from 'react';
-
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -45,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Task = ({task, deleteTask, completeTask, index, moveTask, status}) => {
+const Task = ({task, deleteTask, completeTask}) => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   let history = useHistory();
