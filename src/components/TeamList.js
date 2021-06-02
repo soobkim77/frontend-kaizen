@@ -32,27 +32,26 @@ const TeamList = (props) =>  {
 
   return (
     <div className={classes.root}>
-        <h2>My Teams:</h2>
       <Accordion>
             <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls={`team${props.team.id}-content`}
             id={`team${props.team.id}-header`}
             >
-            <Typography className={classes.heading}>{props.team.name}</Typography>
+            <Typography className={classes.heading}>{props.team.attributes.name}</Typography>
             </AccordionSummary>
                 <AccordionDetails>
                     <Grid container className={classes.inner}>
                         <Grid item xs={2}>
                             Member Names:
-                            {props.team.members.map(member => {
+                            {props.team.attributes.members.map(member => {
                                 return <h4>{member}</h4>
                         })}
                         </Grid>
                         <Grid item xs={9}>
                             Description:
                             <Typography>
-                                {props.team.description}
+                                {props.team.attributes.description}
                             </Typography>
                         </Grid>
                         <Grid item xs={1}>

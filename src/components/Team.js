@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Grid } from '@material-ui/core'
 import { showTeam } from '../redux/actions/showTeam'
 import BoardPrev from './BoardPrev'
-import BoardDrawer from './BoardDrawer'
 
 
 const Team = (props) => {
@@ -18,7 +17,6 @@ const Team = (props) => {
         {props.currentTeam.attributes ?
         <>
             <h2>{props.currentTeam.attributes.name}</h2>
-            <BoardDrawer />
             <Grid container >
             {props.currentTeam.attributes.boards.map(b => {
                 return <BoardPrev key={b.id} board={b} />

@@ -11,7 +11,10 @@ export function getTeams() {
         fetch('http://localhost:3000/teams', configObj)
         .then(response => response.json())
         .then(data => {
-            dispatch({ type: 'GET_TEAMS', teams: data.teams.data.attributes })
+            let led = data.teams.data
+            let mems = data.mem.data
+            let teams = led.concat(mems)
+            dispatch({ type: 'GET_TEAMS', teams})
         });
     }
 }

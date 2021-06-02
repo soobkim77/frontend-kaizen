@@ -4,21 +4,17 @@ import EditIcon from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
 import { useHistory } from "react-router-dom";
 import { connect } from 'react-redux';
-import { addTask } from '../redux/actions/addTask'
+import { addTeam } from '../redux/actions/addTeam'
 
-const CreateTask = (props) => {
-    const [title, setTitle] = useState();
+const CreateTeam = (props) => {
+    const [name, setName] = useState();
     const [description, setDescription] = useState()
-    const [dueDate, setDueDate] = useState();
-    const [status, setStatus] = useState();
     let history = useHistory();
 
     const handleChange = (event, type) => {
         let stateMap = {
-            title: (event) => setTitle(event.target.value),
+            name: (event) => setName(event.target.value),
             description: (event) => setDescription(event.target.value),
-            dueDate: (event) => setDueDate(event.target.value)
-            // status: (event) => setStatus(event.target.value)
         };
 
         stateMap[type](event);
@@ -26,17 +22,12 @@ const CreateTask = (props) => {
     const submitAdd = (e) => {
         e.preventDefault();
 
-        let boardID = props.currentBoard.board.id
-
-        let task = {
-            title: title,
-            description: description,
-            due_date: dueDate,
-            board_id: props.currentBoard.board.id,
-            status: status
+        let team = {
+            name: name,
+            description: description
         }
-        props.addTask(task)
-        history.push(`/boards/${boardID}`)
+        props.addTeam(team)
+        history.push(`/teams`)
     }
 
 
@@ -48,12 +39,12 @@ const CreateTask = (props) => {
                 margin='normal'
                 required
                 fullWidth
-                onChange={(event) => handleChange(event, "title")}
-                id='title'
-                label='title'
-                name='title'
+                onChange={(event) => handleChange(event, "name")}
+                id='name'
+                label='name'
+                name='name'
                 autoFocus
-                value={title}
+                value={name}
             />
             <TextField
                 variant='outlined'
@@ -67,19 +58,6 @@ const CreateTask = (props) => {
                 autoFocus
                 value={description}
             />
-            <TextField
-                variant='outlined'
-                margin='normal'
-                required
-                fullWidth
-                onChange={(event) => handleChange(event, "dueDate")}
-                id='dueDate'
-                label='Due Date - YYYY-MM-DD'
-                name='dueDate'
-                autoFocus
-                value={dueDate}
-                // inputProps={{pattern: "^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$"}}
-            />
             <Button
                 variant="contained"
                 color="default"
@@ -87,7 +65,7 @@ const CreateTask = (props) => {
                 startIcon={<EditIcon />}
                 type="submit"
                 >
-                Save Task
+                Save Team
             </Button>
         </form>
     )
@@ -101,10 +79,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addTask: (task) => {
-            dispatch(addTask(task))
+        addTeam: (team) => {
+            dispatch(addTeam(team))
         }
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateTask)
+export default connect(mapStateToProps, mapDispatchToProps)(CreateTeam)

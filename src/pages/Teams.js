@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { useState, Fragment } from 'react'
 import TeamList from '../components/TeamList'
-import { Button, makeStyles, Grid, Accordion, AccordionSummary, AccordionDetails } from '@material-ui/core'
+import { Button, makeStyles, Grid } from '@material-ui/core'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -19,12 +19,12 @@ const Teams = (props) => {
 
     return (
         <Fragment>
-            {console.log(props)}
-            <Grid container>
+            <h2>My Teams:</h2>
+            {props.teams !== 0 ? <Grid container>
                 {props.teams.map(team => {
-                    return <TeamList key={team.id} team={team}/>
+                    return <TeamList key={team.attributes.id} team={team}/>
                 })}
-            </Grid>
+            </Grid> : null}
         </Fragment>
     )
 }

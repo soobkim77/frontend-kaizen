@@ -15,21 +15,9 @@ import { connect } from 'react-redux'
 import { Avatar } from '@material-ui/core'
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import Modal from '@material-ui/core/Modal';
+import NewTeamDialog from './NewTeamDialog'
 
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
 
-function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -41,14 +29,6 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: "red",
   },
-  paper: {
-    position: 'absolute',
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
-  }
 }));
 
 const BoardDrawer = (props) => {
@@ -56,16 +36,16 @@ const BoardDrawer = (props) => {
   const [state, setState] = useState({
     left: false
   }) 
-  const [open, setOpen] = useState(false)
-  const [modalStyle] = useState(getModalStyle);
+  // const [open, setOpen] = useState(false)
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleOpen = () => {
+  //   setOpen(true);
+  // };
+
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -75,14 +55,6 @@ const BoardDrawer = (props) => {
     setState({ ...state, [anchor]: open });
   };
 
-  const body = (
-    <div style={modalStyle} className={classes.paper}>
-      <h2 id="simple-modal-title">Text in a modal</h2>
-      <p id="simple-modal-description">
-        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-      </p>
-    </div>
-  );
 
   const list = (anchor) => (
     <div
@@ -104,20 +76,15 @@ const BoardDrawer = (props) => {
             <ListItemText primary={member} />
           </ListItem>
         ))}
+        <ListItem button>
+          <NewTeamDialog />
+        </ListItem>
       </List>
-      <Divider />
-      {/* <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List> */}
-          <ListItem button onClick={handleOpen} >
+          <Divider />
+          {/* <ListItem button onClick={handleOpen} >
             <ListItemIcon><AddBoxIcon /></ListItemIcon>
             <ListItemText primary={"Add a Member"} />
-          </ListItem>
+          </ListItem> */}
     </div>
   );
 
@@ -132,14 +99,6 @@ const BoardDrawer = (props) => {
           </Drawer>
         </Fragment>
       ))}
-       <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        >
-        {body}
-        </Modal>
     </div>
   );
 }

@@ -125,13 +125,6 @@ const SignUp = () => {
           >
             Sign Up
           </Button>
-          <Grid container>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Have an account? Sign In"}
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
       <Box mt={8}>

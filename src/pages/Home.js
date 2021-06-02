@@ -7,7 +7,7 @@ import TextField from "@material-ui/core/TextField";
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import {Button, makeStyles, Grid} from "@material-ui/core";
 import { getTeams } from '../redux/actions/getTeams'
-
+import { getUsers } from '../redux/actions/getUsers'
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -26,6 +26,7 @@ const Home = (props) => {
     useEffect(() => {
         props.fetchBoards();
         props.getTeams();
+        props.getUsers()
     }, [])
 
 
@@ -61,7 +62,10 @@ const mapDispatchToProps = (dispatch) => {
         },
         getTeams: () => {
             dispatch(getTeams())
-        }
+        },
+        getUsers: () =>{
+            dispatch(getUsers())
+          },
     }
 }
 

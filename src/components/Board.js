@@ -33,6 +33,7 @@ const Board = (props) => {
     return (
         
         <Fragment>
+            {console.log(window)}
             {props.currentBoard.board ? 
             <Fragment>
             {props.currentBoard.board.title}
@@ -48,7 +49,7 @@ const Board = (props) => {
                                             .filter(t => t.status === s)
                                             .map((t, idx) => <Task key={t.id} index={idx} status={s} task={t} />)
                                     }
-                    </Grid>
+                        </Grid>
                     )
                 })}
             </Grid>
