@@ -134,6 +134,7 @@ const PersistentDrawer = (props) => {
   const signoutHelper = () => {
     localStorage.removeItem("jwt")
     props.signOut();
+    history.push('/')
   }
 
   const delMember = (e) => {

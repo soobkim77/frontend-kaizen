@@ -18,17 +18,17 @@ import './App.css';
 const App = ({loggedIn, logIn}) =>  {
   const history = useHistory()
 
-  // useEffect(() => {
-  //   const authToken = localStorage.getItem("jwt")
-  //   if (authToken){
-  //       logIn();
-  //       history.push('/home')
-  //   }
-  //   else {
-  //       history.push('/')
-  //   }
+  useEffect(() => {
+    const authToken = localStorage.getItem("jwt")
+    if (authToken){
+        logIn();
+        history.push('/home')
+    }
+    else {
+        history.push('/')
+    }
     
-  // }, [])
+  }, [])
 
   return (
     <div className="App">
@@ -36,7 +36,6 @@ const App = ({loggedIn, logIn}) =>  {
       <div style={{marginTop: 80}}>
         <Switch>
           <Route exact path="/" component={SignIn} />
-          <Route exact path="/signup" component={SignUp} />
           <Route exact path="/home" render={(routerProps) => <Home {...routerProps} />} />
           <Route exact path='/boards/create' component={BoardForm} />
           <Route exact path='/boards/:id' component={Board} />

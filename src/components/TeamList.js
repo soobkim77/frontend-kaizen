@@ -8,6 +8,9 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Grid, IconButton } from '@material-ui/core'
 import GroupWorkIcon from '@material-ui/icons/GroupWork';
 import { useHistory } from "react-router-dom";
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import { deleteTeam } from '../redux/actions/deleteTeam'
+import { connect } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,6 +33,10 @@ const TeamList = (props) =>  {
     history.push(`/teams/${props.team.id}`)
   }
 
+  const deleteTeam = () => {
+    props.deleteTeam(props.team)
+  }
+
   return (
     <div className={classes.root}>
       <Accordion>
@@ -48,15 +55,18 @@ const TeamList = (props) =>  {
                                 return <h4>{member}</h4>
                         })}
                         </Grid>
-                        <Grid item xs={9}>
+                        <Grid item xs={8}>
                             Description:
                             <Typography>
                                 {props.team.attributes.description}
                             </Typography>
                         </Grid>
-                        <Grid item xs={1}>
+                        <Grid item xs={2}>
                             <IconButton onClick={toTeam}>
                                 <GroupWorkIcon />
+                            </IconButton>
+                            <IconButton onClick={deleteTeam}>
+                                <DeleteForeverIcon />
                             </IconButton>
                         </Grid>
                     </Grid>
@@ -67,4 +77,12 @@ const TeamList = (props) =>  {
   );
 }
 
-export default TeamList
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteTeam: (team) => {
+      dispatch(deleteTeam(team))
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(TeamList)

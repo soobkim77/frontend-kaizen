@@ -30,6 +30,12 @@ const teams = (state = initialState, action) => {
                     ...state,
                     currentTeam: action.team
                 }
+        case ("DELETE_TEAM"): 
+            return {
+                ...state,
+                teams: [...state.teams].filter(team => team.attributes.id !== action.team.id),
+                requesting: false
+            }
         default: 
             return state
     }
