@@ -1,11 +1,21 @@
 import { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { Grid } from '@material-ui/core'
+import { Grid, makeStyles } from '@material-ui/core'
 import { showTeam } from '../redux/actions/showTeam'
 import BoardPrev from './BoardPrev'
 
 
+const useStyles = makeStyles((theme) => ({
+    grid_main: {
+        margin: "auto",
+        width: "80%",
+        justifyContent: "space-evenly",
+        alignItems: "center"
+    },
+  }));
+
 const Team = (props) => {
+    const classes = useStyles()
 
     useEffect(() => {
         props.showTeam(props.match.params.id)
@@ -17,7 +27,7 @@ const Team = (props) => {
         {props.currentTeam.attributes ?
         <>
             <h2>{props.currentTeam.attributes.name}</h2>
-            <Grid container >
+            <Grid container className={classes.grid_main}>
             {props.currentTeam.attributes.boards.map(b => {
                 return <BoardPrev key={b.id} board={b} />
             })}

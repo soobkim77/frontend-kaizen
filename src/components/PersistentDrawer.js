@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -25,11 +25,14 @@ import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 import ChangeTeamDialog from './ChangeTeamDialog'
 import StarIcon from '@material-ui/icons/Star';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import { delMember } from '../redux/actions/delMember'
+import { delMember } from '../redux/actions/delMember';
+
+
 
 
 
 const drawerWidth = 240;
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -88,10 +91,20 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    position: "absolute",
+    marginLeft: "46%"
   },
   del: {
     justifyContent: "right",
     alignItems: "right"
+  },
+  log: {
+    position: "absolute",
+    marginLeft: "90%"
+  },
+  boardT: {
+    marginLeft: 50,
+    marginRight: 50
   }
 }));
 
@@ -133,21 +146,24 @@ const PersistentDrawer = (props) => {
 
   const signoutHelper = () => {
     localStorage.removeItem("jwt")
+    props.clearTeam()
     props.signOut();
     history.push('/')
   }
 
-  const delMember = (e) => {
-    let user = props.users.filter(user => user.attributes.username == e.target.id)
-    // let delObj = {
-    //   member_id: user[0].id,
-    //   team_id: props.currentTeam.id
-    // }
+  const delMember = (e, member) => {
+    let user = props.users.filter(user => user.attributes.username == member)
+    let delObj = {
+      member_id: user[0].attributes.id,
+      team_id: props.currentTeam.id
+    }
     console.log(user)
-    // props.delMember(delObj)
+    props.delMember(delObj)
   }
 
-
+  const addTask = () => {
+    history.push('/tasks/create')
+  }
 
   return (
     <div className={classes.root}>
@@ -157,6 +173,7 @@ const PersistentDrawer = (props) => {
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
+        color="primary"
       >
         <Toolbar>
           <IconButton
@@ -171,11 +188,26 @@ const PersistentDrawer = (props) => {
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={() => homeLink()} >
             <HomeIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
+          {window.location.href.includes(`boards`) && !window.location.href.includes(`create`) ?
+          <>
+            <Typography variant="h6" className={classes.boardT}>
+                {props.board.board.title}
+            </Typography>
+            <IconButton className={classes.menuButton} color="inherit" aria-label="menu" onClick={() => addTask()} >
+              <AddBoxIcon />
+              <Typography>
+                Task
+              </Typography>
+            </IconButton>
+          </>
+          :
+           null
+           }
+          <Typography variant="h4" className={classes.title}>
             Kaizen
           </Typography>
 
-          <Button color="inherit" onClick={() => signoutHelper()} >LogOut</Button>
+          <Button color="inherit" className={classes.log} variant="outlined" onClick={() => signoutHelper()} >LogOut</Button>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -202,7 +234,7 @@ const PersistentDrawer = (props) => {
             </ListItem>
             <ListItem button onClick={(e) => handleTarget(e)}>
                 <ListItemIcon id={"new-board"} >
-                    <AddBoxIcon />
+                    <AddBoxIcon /> 
                 </ListItemIcon>
                 <ListItemText primary={"Add a Board"} />
             </ListItem>
@@ -235,7 +267,7 @@ const PersistentDrawer = (props) => {
                 </ListItemIcon>
                 <ListItemText primary={member} />
                 <ListItemIcon  className={classes.del}  >
-                    <DeleteForeverIcon id={member} onClick={(e) => delMember(e)}/>
+                    <DeleteForeverIcon  id={member} onClick={(e) => delMember(e, member)}/>
                 </ListItemIcon>
             </ListItem>
             ))}
@@ -259,7 +291,8 @@ const mapStateToProps = (state) => {
     return {
         currentTeam: state.teams.currentTeam,
         teams: state.teams.teams,
-        users: state.teams.users
+        users: state.teams.users,
+        board: state.boards.currentBoard
     }
 }
 
@@ -270,6 +303,9 @@ const mapDispatchToProps = (dispatch) => {
       },
       delMember: (member) => {
         dispatch(delMember(member))
+      },
+      clearTeam: () => {
+        dispatch({type: "CLEAR_TEAM"})
       }
     }
   }

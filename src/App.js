@@ -14,9 +14,20 @@ import {Route, Switch, Redirect, useHistory} from 'react-router-dom';
 import PersistentDrawer from './components/PersistentDrawer'
 import Home from './pages/Home'
 import './App.css';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+
+
+
 
 const App = ({loggedIn, logIn}) =>  {
   const history = useHistory()
+
+  const darkTheme = createMuiTheme({
+    palette: {
+      type: 'dark',
+    },
+  });
 
   useEffect(() => {
     const authToken = localStorage.getItem("jwt")
@@ -31,23 +42,25 @@ const App = ({loggedIn, logIn}) =>  {
   }, [])
 
   return (
-    <div className="App">
-      {loggedIn.loggedIn ? <PersistentDrawer/> : null }
-      <div style={{marginTop: 80}}>
-        <Switch>
-          <Route exact path="/" component={SignIn} />
-          <Route exact path="/home" render={(routerProps) => <Home {...routerProps} />} />
-          <Route exact path='/boards/create' component={BoardForm} />
-          <Route exact path='/boards/:id' component={Board} />
-          <Route exact path='/boards/:id/edit' component={EditBoardForm} />
-          <Route exact path='/tasks/create' component={CreateTask} />
-          <Route exact path='/tasks/:id/edit' component={EditTaskForm} />
-          <Route exact path='/teams' component={Teams} />
-          <Route exact path='/teams/create' component={CreateTeam} />
-          <Route exact path='/teams/:id' component={Team} />
-        </Switch>
+    <ThemeProvider theme={darkTheme}>
+      <div className="App">
+        {loggedIn.loggedIn ? <PersistentDrawer/> : null }
+        <div style={{marginTop: 80}}>
+          <Switch>
+            <Route exact path="/" component={SignIn} />
+            <Route exact path="/home" render={(routerProps) => <Home {...routerProps} />} />
+            <Route exact path='/boards/create' component={BoardForm} />
+            <Route exact path='/boards/:id' component={Board} />
+            <Route exact path='/boards/:id/edit' component={EditBoardForm} />
+            <Route exact path='/tasks/create' component={CreateTask} />
+            <Route exact path='/tasks/:id/edit' component={EditTaskForm} />
+            <Route exact path='/teams' component={Teams} />
+            <Route exact path='/teams/create' component={CreateTeam} />
+            <Route exact path='/teams/:id' component={Team} />
+          </Switch>
+        </div>
       </div>
-    </div>
+    </ThemeProvider>
   );
 }
 

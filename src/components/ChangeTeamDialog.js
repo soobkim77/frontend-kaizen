@@ -34,7 +34,7 @@ const ChangeTeamDialog = (props) => {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={(e) => handleClickOpen(e)}>
+      <Button variant="outlined" color="white" style={{width: 200}} onClick={(e) => handleClickOpen(e)}>
         Change Team
       </Button>
       <Dialog open={open} onClose={(e) => handleClose(e)} aria-labelledby="form-dialog-title">

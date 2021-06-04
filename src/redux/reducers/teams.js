@@ -19,6 +19,8 @@ const teams = (state = initialState, action) => {
             return {...state, currentTeam: action.team}
         case ("ADD_MEMBER"):
             return {...state, currentTeam: action.team, requesting: false}
+        case ("CLEAR_TEAM"):
+            return {...state, currentTeam: {}}
         case ("ADD_TEAM"): 
             return {
                 ...state, 

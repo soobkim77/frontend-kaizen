@@ -13,7 +13,10 @@ export function addBoard(board) {
         fetch('http://localhost:3000/boards', configObj)
             .then(response => response.json())
             .then(board => {
-                console.log(board)
-                dispatch({ type: 'ADD_BOARD', board })});
+                if (board.board.owner_type === "User"){
+                    dispatch({ type: 'ADD_BOARD', board })
+                } 
+                } 
+               );
     };
 }

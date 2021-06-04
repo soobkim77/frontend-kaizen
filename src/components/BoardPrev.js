@@ -12,18 +12,31 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { showBoard } from '../redux/actions/showBoard'
 import { useHistory } from "react-router-dom";
+import EditIcon from '@material-ui/icons/Edit';
+import { IconButton } from '@material-ui/core';
 import { deleteBoard } from "../redux/actions/deleteBoard"
+import MoreIcon from '@material-ui/icons/More';
 
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
-    minWidth: 345,
+    width: 345,
+    maxHeight: 325,
+    minHeight: 325,
     margin: 20
   },
   media: {
-    height: 140,
+    height: 170,
   },
+  btn_group: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  area: {
+    maxHeight: 260,
+    minHeight: 260
+  },
+
 });
 
 const BoardPrev = ({board, showBoard, deleteBoard}) => {
@@ -32,6 +45,7 @@ const BoardPrev = ({board, showBoard, deleteBoard}) => {
 
     const getBoard = (board) => {
       showBoard(board);
+      history.push(`/boards/${board.id}`)
     }
 
     const editBoard = () => {
@@ -45,34 +59,40 @@ const BoardPrev = ({board, showBoard, deleteBoard}) => {
       deleteBoard(board);
     }
 
+    const desc = () => {
+      let str = board.description
+      if (str.length <= 30) return str;
+      return str.substr(0, str.lastIndexOf(" ", 30)) + "..."
+    }
+
 
     return (
         <Card className={classes.root}>
-            <CardActionArea>
+            <CardActionArea className={classes.area}>
                 <CardMedia
                 className={classes.media}
-                image="https://picsum.photos/600/600"
+                image={`https://picsum.photos/200/300/?${board.title[0]}`}
                 title={board.title}
                 />
                 <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
+                <Typography gutterBottom variant="h5" component="h2" >
                     {board.title}
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
-                   {board.description}
+                   {desc()}
                 </Typography>
                 </CardContent>
             </CardActionArea>
-            <CardActions>
-                <Button size="small" color="primary" onClick={() => editBoard()} >
-                Edit
-                </Button>
-                <Link to={`/boards/${board.id}`} onClick={() => getBoard(board)}>
-                Learn More
-                </Link>
-                <Button onClick={() => deleteBor()} >
-                  <DeleteIcon />
-                </Button>
+            <CardActions className={classes.btn_group}>
+              <IconButton aria-label="edit task"  onClick={() => getBoard(board)}>
+                <MoreIcon fontSize="medium"/>
+              </IconButton>
+              <IconButton aria-label="edit task" onClick={() => editBoard()}>
+                <EditIcon fontSize="medium"/>
+              </IconButton>
+                <IconButton onClick={() => deleteBor()} >
+                  <DeleteIcon fontSize="medium"/>
+                </IconButton>
             </CardActions>
          </Card>
     )

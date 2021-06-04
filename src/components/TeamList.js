@@ -14,7 +14,10 @@ import { connect } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
+    width: '75%',
+    marginLeft: "20%",
+    marginRight: "20%",
+    paddingBottom: 10
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),

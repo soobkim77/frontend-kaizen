@@ -1,11 +1,9 @@
 import { connect } from 'react-redux'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import BoardPrev from '../components/BoardPrev'
 import { fetchBoards } from '../redux/actions/fetchBoards'
 import { addBoard } from '../redux/actions/addBoard'
-import TextField from "@material-ui/core/TextField";
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import {Button, makeStyles, Grid} from "@material-ui/core";
+import { makeStyles, Grid} from "@material-ui/core";
 import { getTeams } from '../redux/actions/getTeams'
 import { getUsers } from '../redux/actions/getUsers'
 
@@ -14,8 +12,17 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
     },
     grid: {
-        justifyContent: "space-evenly",
+        
         padding: "20px"
+    },
+    grid_main: {
+        margin: "auto",
+        width: "80%",
+        justifyContent: "space-evenly",
+        alignItems: "center"
+    },
+    bdTitle: {
+        justify: "center",
     }
   }));
   
@@ -32,9 +39,18 @@ const Home = (props) => {
 
     return (
         <div>
-            <Grid container direction='space-between'>
+            <h2 className={classes.bdTitle}> My Boards </h2>
+            <Grid container xs={12} direction='space-between' className={classes.grid_main}>
                 {props.boards.boards ?
-                    props.boards.boards.map(board => <BoardPrev board={board} key={board.id} />)
+                    props.boards.boards.map(board => 
+                {
+                    return(
+                        <Grid item xs={3}>
+                            <BoardPrev board={board} key={board.id} />
+                        </Grid>
+                    )
+                    
+                })
                     :
                     null}
             </Grid>

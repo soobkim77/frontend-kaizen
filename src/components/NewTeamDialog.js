@@ -8,8 +8,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { connect } from 'react-redux'
 import { useState } from 'react'
 import Autocomplete from '@material-ui/lab/Autocomplete';
-
 import { addMember } from '../redux/actions/addMember'
+import { makeStyles } from '@material-ui/core'
+
 
 const NewTeamDialog = (props) => {
   const [open, setOpen] = useState(false);
@@ -42,7 +43,7 @@ const NewTeamDialog = (props) => {
 
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={(e) => handleClickOpen(e)}>
+      <Button variant="outlined" style={{width: 200}} color="white" onClick={(e) => handleClickOpen(e)}>
         Add Member
       </Button>
       <Dialog open={open} onClose={(e) => handleClose(e)} aria-labelledby="form-dialog-title">

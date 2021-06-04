@@ -5,11 +5,29 @@ import Button from '@material-ui/core/Button';
 import { useHistory } from "react-router-dom";
 import { connect } from 'react-redux'
 import { editTask } from '../redux/actions/editTask'
+import { makeStyles } from '@material-ui/core'
+
+const useStyles = makeStyles((theme) => ({
+    container: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    textField: {
+      marginLeft: theme.spacing(1),
+      marginRight: theme.spacing(1),
+      width: 200,
+      marginTop: 20
+    },
+    button: {
+        marginTop: 50
+    }
+  }));
 
 const EditTaskForm = (props) => {
     const [title, setTitle] = useState(props.location.state.title);
     const [description, setDescription] = useState(props.location.state.description)
     const [dueDate, setDueDate] = useState(props.location.state.due_date);
+    const classes = useStyles()
     let history = useHistory();
 
     const handleChange = (event, type) => {
@@ -63,18 +81,17 @@ const EditTaskForm = (props) => {
                 value={description}
             />
             <TextField
-                variant='outlined'
-                margin='normal'
-                required
-                fullWidth
-                onChange={(event) => handleChange(event, "dueDate")}
-                id='dueDate'
-                label='Due Date'
-                name='dueDate'
-                autoFocus
-                value={dueDate}
-                // inputProps={{pattern: "^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$"}}
-            />
+                    id="date"
+                    label="Birthday"
+                    type="date"
+                    defaultValue="2021-06-04"
+                    className={classes.textField}
+                    onChange={(event) => handleChange(event, "dueDate")}
+                    InputLabelProps={{
+                    shrink: true,
+                    }}
+                    value={dueDate}
+                />
             <Button
                 variant="contained"
                 color="default"
