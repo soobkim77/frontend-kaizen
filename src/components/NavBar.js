@@ -9,6 +9,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import HomeIcon from '@material-ui/icons/Home';
+import { Menu, MenuItem } from '@material-ui/core'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +27,21 @@ const useStyles = makeStyles((theme) => ({
 const  NavBar = (props) => {
   const classes = useStyles();
   const history = useHistory();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (e) => {
+    setAnchorEl(null);
+    switch(e.target.id){
+      case("teams"):
+        return history.push('/teams')
+      case("new-board"):
+        return history.push('/boards/create')
+    }
+  };
 
   const homeLink = () => {
     history.push('/home')
@@ -39,7 +56,7 @@ const  NavBar = (props) => {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" aria-haspopup="true" aria-controls="nav-menu" onClick={handleClick}>
             <MenuIcon />
           </IconButton>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={() => homeLink()} >
@@ -51,6 +68,17 @@ const  NavBar = (props) => {
           <Button color="inherit" onClick={() => signoutHelper()} >LogOut</Button>
         </Toolbar>
       </AppBar>
+      <Menu
+        id="nav-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem id="teams" onClick={handleClose}>Teams</MenuItem>
+        <MenuItem id="new-board" onClick={handleClose}>Create a Board</MenuItem>
+        <MenuItem id="new-team" onClick={handleClose}>Create a Team</MenuItem>
+      </Menu>
     </div>
   );
 }

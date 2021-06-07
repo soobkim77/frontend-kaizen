@@ -1,5 +1,4 @@
 import React, {Fragment} from 'react';
-
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -11,20 +10,23 @@ import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
+import { red, green, yellow, blue } from '@material-ui/core/colors';
 import EditIcon from '@material-ui/icons/Edit';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DoneIcon from '@material-ui/icons/Done';
 import { connect } from 'react-redux'
 import { useHistory } from "react-router-dom";
-import { Button } from '@material-ui/core'
-import DeleteIcon from '@material-ui/icons/Delete';
+import { Button, Grid } from '@material-ui/core'
 import { deleteTask } from '../redux/actions/deleteTask'
+import statuses from '../status'
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: "auto",
-    // opacity: {isDragging} ? 0 : 1
+    paddingBottom: 10
   },
   media: {
     height: 0,
@@ -40,12 +42,36 @@ const useStyles = makeStyles((theme) => ({
   expandOpen: {
     transform: 'rotate(180deg)',
   },
-  avatar: {
-    backgroundColor: red[500],
+  avatarC: {
+    backgroundColor: green[500],
+    width: 40,
+    height: 10,
+    borderRadius: 5
   },
+  avatarO: {
+    backgroundColor: red[500],
+    width: 40,
+    height: 10,
+    borderRadius: 5
+  },
+  avatarI: {
+    backgroundColor: yellow[500],
+    width: 40,
+    height: 10,
+    borderRadius: 5
+  },
+  avatarR: {
+    backgroundColor: blue[500],
+    width: 40,
+    height: 10,
+    borderRadius: 5
+  },
+  btn_grp: {
+    marginLeft: 30
+  }
 }));
 
-const Task = ({task, deleteTask, completeTask, index, moveTask, status}) => {
+const Task = ({task, deleteTask, completeTask}) => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   let history = useHistory();
@@ -53,6 +79,28 @@ const Task = ({task, deleteTask, completeTask, index, moveTask, status}) => {
   const doTask = () => {
     let myTask = task
     myTask.status = "completed"
+    completeTask(myTask)
+  }
+
+  const backTask = () => {
+    let myTask = task
+    let index = statuses.findIndex( s => s === task.status)
+    if (index === 0) {
+      myTask.status = "open"
+    } else {
+      myTask.status = statuses[index - 1]
+    }
+    completeTask(myTask)
+  }
+
+  const forwardTask = () => {
+    let myTask = task
+    let index = statuses.findIndex( s => s === task.status)
+    if (index === 3) {
+      myTask.status = "completed"
+    } else {
+      myTask.status = statuses[index + 1]
+    }
     completeTask(myTask)
   }
 
@@ -70,30 +118,47 @@ const Task = ({task, deleteTask, completeTask, index, moveTask, status}) => {
     setExpanded(!expanded);
   };
 
+  const statusColor = () => {
+    switch(task.status){
+      case("open"): 
+        return classes.avatarO
+      case("in-progress"): 
+        return classes.avatarI
+      case("review"): 
+        return classes.avatarR
+      case("completed"):
+        return classes.avatarC 
+    }
+  }
+
   return (
     <Fragment>
-
       <Card className={classes.root} >
         <CardHeader
           avatar={
-            <Avatar aria-label="recipe" className={classes.avatar}>
-              {task.title[0]}
-            </Avatar>
+            <Avatar aria-label="recipe" size="small" className={statusColor()} />
           }
           title={task.title}
           subheader={`Due By: ${task.due_date}`}
         />
         <CardActions disableSpacing>
-          <Button onClick={() => delTask()}>
-            Delete
-          </Button>
+          <IconButton aria-label="edit task" onClick={() => delTask()}>
+            <RemoveCircleOutlineIcon fontSize="small"/>
+          </IconButton>
           <IconButton aria-label="edit task" onClick={() => editTask()}>
-            <EditIcon />
+            <EditIcon fontSize="small"/>
           </IconButton>
-          <IconButton aria-label="share" onClick={() => doTask()}>
-            <DoneIcon />
-          </IconButton>
-
+          <Grid container className={classes.btn_grp}>
+            <IconButton aria-label="share" >
+              <ArrowBackIcon fontSize="small" id="back" onClick={(e) => backTask()} />
+            </IconButton>
+            <IconButton aria-label="share" >
+              <DoneIcon fontSize="small" id="complete" onClick={(e) => doTask()} />
+            </IconButton>
+            <IconButton aria-label="share" >
+              <ArrowForwardIcon fontSize="small" id="forward" onClick={(e) => forwardTask()} />
+            </IconButton>
+          </Grid>
           <IconButton
             className={clsx(classes.expand, {
               [classes.expandOpen]: expanded,
@@ -102,7 +167,7 @@ const Task = ({task, deleteTask, completeTask, index, moveTask, status}) => {
             aria-expanded={expanded}
             aria-label="show more"
           >
-            <ExpandMoreIcon />
+            <ExpandMoreIcon fontSize="small"/>
           </IconButton>
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>

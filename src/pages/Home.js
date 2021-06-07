@@ -1,108 +1,60 @@
 import { connect } from 'react-redux'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import BoardPrev from '../components/BoardPrev'
 import { fetchBoards } from '../redux/actions/fetchBoards'
 import { addBoard } from '../redux/actions/addBoard'
-import TextField from "@material-ui/core/TextField";
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import {Button, makeStyles, Grid} from "@material-ui/core";
-
+import { makeStyles, Grid} from "@material-ui/core";
+import { getTeams } from '../redux/actions/getTeams'
+import { getUsers } from '../redux/actions/getUsers'
 
 const useStyles = makeStyles((theme) => ({
     button: {
       margin: theme.spacing(1),
     },
-    gird: {
-        justifyContent: "space-evenly",
+    grid: {
+        
         padding: "20px"
+    },
+    grid_main: {
+        margin: "auto",
+        width: "80%",
+        justifyContent: "space-evenly",
+        alignItems: "center"
+    },
+    bdTitle: {
+        justify: "center",
     }
   }));
   
 
 const Home = (props) => {
     const classes = useStyles();
-    const [newBoard, setNewBoard] = useState(false)
-    const [title, setTitle] = useState();
-    const [description, setDescription] = useState()
-
     
-
-    const handleChange = (event, type) => {
-        let stateMap = {
-            title: (event) => setTitle(event.target.value),
-            description: (event) => setDescription(event.target.value)
-        };
-
-        stateMap[type](event);
-    }
-
     useEffect(() => {
         props.fetchBoards();
+        props.getTeams();
+        props.getUsers()
     }, [])
 
-    const addBoard = (e) => {
-        setTitle("");
-        setDescription("");
-        e.preventDefault();
-        const board = {
-            title: title,
-            description: description
-        }
-        props.addBoard(board)
-        setNewBoard(false)
-    }
-
-    const newBoardForm = () => {
-        setNewBoard(!newBoard)
-    }
 
     return (
         <div>
-            <button onClick={() => newBoardForm()} >Add a Board</button>
-            {newBoard ?
-                <form onSubmit={(e) => addBoard(e)}>
-                    <TextField
-                        variant='outlined'
-                        margin='normal'
-                        required
-                        fullWidth
-                        onChange={(event) => handleChange(event, "title")}
-                        id='title'
-                        label='title'
-                        name='title'
-                        autoFocus
-                    />
-                    <TextField
-                        variant='outlined'
-                        margin='normal'
-                        required
-                        fullWidth
-                        onChange={(event) => handleChange(event, "description")}
-                        id='description'
-                        label='description'
-                        name='description'
-                        autoFocus
-                    />
-                        <Button
-                        variant="contained"
-                        color="default"
-                        className={classes.button}
-                        startIcon={<CloudUploadIcon />}
-                        type="submit"
-                        >
-                        Create Board
-                        </Button>
-                </form>
-                :
-                null
-            }
-            <Grid container direction='space-between'>
+            <h2 className={classes.bdTitle}> My Boards </h2>
+            <Grid container xs={12} direction='space-between' className={classes.grid_main}>
                 {props.boards.boards ?
-                    props.boards.boards.map(board => <BoardPrev board={board} key={board.id} />)
+                    props.boards.boards.map(board => 
+                {
+                    return(
+                        <Grid item xs={3}>
+                            <BoardPrev board={board} key={board.id} />
+                        </Grid>
+                    )
+                    
+                })
                     :
                     null}
             </Grid>
-            
+            {console.log(props)}
         </div>
     )
 }
@@ -111,7 +63,8 @@ const mapStateToProps = (state) => {
     return {
         boards: state.boards.boards,
         currentBoard: { ...state.currentBoard },
-        requesting: state.requesting
+        requesting: state.requesting,
+        teams: state.teams.teams
     }
 }
 
@@ -122,7 +75,13 @@ const mapDispatchToProps = (dispatch) => {
         },
         addBoard: (board) => {
             dispatch(addBoard(board))
-        }
+        },
+        getTeams: () => {
+            dispatch(getTeams())
+        },
+        getUsers: () =>{
+            dispatch(getUsers())
+          },
     }
 }
 

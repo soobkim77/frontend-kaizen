@@ -47,11 +47,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SESHURL = "http://localhost:3000/sessions";
+const URL = "http://localhost:3000/users";
 
 const SignIn = (props) => {
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [login, setLogin] = useState(true)
   const history = useHistory();
   // const history = useHistory();
 
@@ -94,8 +96,30 @@ const SignIn = (props) => {
     history.push('/home')
   };
 
+  const createUser = (e) => {
+    e.preventDefault();
+    let configObj = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user: {
+          username,
+          password
+        },
+      }),
+    };
+    fetch(URL, configObj)
+      .then((r) => r.json())
+
+    e.target.reset();
+    setLogin(true)
+  };
+
   return (
-    <Container component="main" maxWidth="xs">
+    <div>
+    {login ? <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -140,7 +164,7 @@ const SignIn = (props) => {
           </Button>
           <Grid container>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link onClick={() => setLogin(false)} variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
@@ -151,7 +175,59 @@ const SignIn = (props) => {
         <Copyright />
       </Box>
     </Container>
+    :
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign Up
+        </Typography>
+        <form className={classes.form} onSubmit={e => createUser(e)} noValidate>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            onChange={(event) => handleChange(event, "username")}
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
+            autoFocus
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            onChange={(event) => handleChange(event, "password")}
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            // autoComplete="current-password"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            Sign Up
+          </Button>
+        </form>
+      </div>
+      <Box mt={8}>
+        <Copyright />
+      </Box>
+    </Container>}
+    </div>
   );
+  
 }
 
 const mapStateToProps = (state) => {

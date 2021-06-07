@@ -14,7 +14,10 @@ const useStyles = makeStyles((theme) => ({
     },
     col_wrapper: {
         padding: 20,
-        borderRadius: 5
+        border: 2,
+        borderColor: "white",
+        maxWidth: 400,
+        minWidth: 350
     },
     col_header: {
         fontSize: "20px",
@@ -29,23 +32,16 @@ const Board = (props) => {
     const history = useHistory();
     const classes = useStyles();
 
-    const addTask = () => {
-        history.push("/tasks/create")
-    }
 
     return (
         
         <Fragment>
-            <Button variant="outlined" onClick={() => addTask()}>
-                Add A Task
-            </Button>
             {props.currentBoard.board ? 
             <Fragment>
-            {props.currentBoard.board.title}
-            <Grid container xs={12}>
+            <Grid container xs={12} justify="center" >
             {statuses.map(s => {
                     return (
-                        <Grid item key={s} className={classes.col_wrapper} xs={3}>
+                        <Grid item alignItems="center" key={s} className={classes.col_wrapper} border={1} borderColor="white" xs={3}>
                             <h2 className={classes.col_header}>
                                 {s.toUpperCase()}
                             </h2>
@@ -54,7 +50,7 @@ const Board = (props) => {
                                             .filter(t => t.status === s)
                                             .map((t, idx) => <Task key={t.id} index={idx} status={s} task={t} />)
                                     }
-                    </Grid>
+                        </Grid>
                     )
                 })}
             </Grid>
