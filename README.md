@@ -1,70 +1,39 @@
-# Getting Started with Create React App
+# Kaizen
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A to-do list app that can be utilized for personal and group based work. This repo is meant to be used with this [repo](https://github.com/soobkim77/backend-kaizen) as a backend
 
-## Available Scripts
+## Project Basis
 
-In the project directory, you can run:
+To-do list apps are often some of the most basic and simple starter apps for new developers. This app was designed to show the full range of capabilities in React.js as well as incorporating a backend with Rails as an API. The core of this project is desinged to maximize the user's experience and increase their efficieny through assignment tracking. 
 
-### `npm start`
+### The User Story
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+User functionality rests on a simple principle, the ability to create tasks for certain project/workspaces, and to track progess on these new tasks. Beyond personal use, a team model was incorporated within so that User's amy share their workspaces with other's for collaborative work. Users thus have the ability to create an account, but also create teams. From the teams panel, they are able to add new members to their team and give them access to boards that are assigned to a team. 
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Workspaces are modeled as boards within the backend. Within a board, the user has the ability to add new tasks, change the status level of the task, add due dates, and add notes/descriptions to tasks as well. Boards are meant to be the main project space where users can interact with other team members through notes, or if the board is a personal one, manage their tasks as they deem fit. 
 
-### `npm test`
+### Stlying
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Utilizing Google's @material-ui library, the style of the website reflects many of Google's specific styling ettiquette. This provides a clear and intuitive design for the website to make the user experience more fluid. On top of the imported code from the library, custom CSS was utilized to incorporate a dark theme for the application.
 
-### `npm run build`
+## Techs
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Listed below are some technologies used on top of the React and Ruby on Rails stack. 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### BCrypt/JWT
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+To ensure secure logins and proper validation processes, User's passwords are encrypted in the backend using the b-crypt gem. AFter successful logins, a JWT token is assigned and sent on every request to the backend. This token is required as part of the validation on the backend to ensure that validated user's are making requests to the backend. 
 
-### `npm run eject`
+### fast_jsonapi 
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Netflix's fast_jsonapi was used on the backend to serialize data and streamline responses from the backend. This gem created a specific format for the data being pulled from the backend, enabling the backend to complete requests at much faster speeds than Ruby's Active-Record serializers (x25 times faster). 
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Redux
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+React-Redux was used as a global state management package. Due to the heirarchal nature of React, state is often set the highest level component and then passed down to the necessary components using props. However, Redux allows the application to have a single store that regulates state across the app. This provides the application with stateful logic and is accessible to any component that the state is needed in. 
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+#### Redux-Thunk
 
-## Learn More
+In order to handle asynchronus AJAX requests, Redux-Thunk was used to control state when making these requests. Due ot the asynch nature of AJAX requests, Redux may dispatch actions before the proper data is returned from the backend. Redux-Thunk handles this by allowing a function to be returned on a dispatch. Thus, the correct state modifier will be applied as a return function on the original AJAX requests, ensuring that the backend has returned the data before the state is manipulated.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
